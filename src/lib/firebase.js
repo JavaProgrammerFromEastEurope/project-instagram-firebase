@@ -1,8 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { FieldValue } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 //import { seedDatabase } from '../seed';
-
 const config = {
   apiKey: "AIzaSyCGeZOHmISM-2uAtdUDDI9eLhurRmk9RQY",
   authDomain: "instagram-dev-d9916.firebaseapp.com",
@@ -13,8 +12,7 @@ const config = {
 };
 
 // Initialize Firebase
-const firebase = initializeApp(config);
 
+export const app = initializeApp(config);
+export const auth = getAuth(app);
 // seedDatabase(firebase)
-
-export { firebase, FieldValue };

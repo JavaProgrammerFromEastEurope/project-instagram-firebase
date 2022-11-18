@@ -11,13 +11,14 @@ const Header = () => {
   const { user } = useUser(loggedInUser?.uid);
   const navigate = useNavigate();
   console.log("username = " + user?.username);
+  console.log("Header");
   return (
     <header className="h-16 bg-white border-b border-gray-primary mb-8">
       <div className="container mx-auto max-w-screen-lg h-full">
         <div className="flex justify-between h-full">
           <div className="text-gray-700 text-center flex items-center align-items cursor-pointer">
             <h1 className="flex justify-center w-full">
-              <Link to={ROUTES.HOME} aria-label="Instagram logo">
+              <Link to={ROUTES.DASHBOARD} aria-label="Instagram logo">
                 <img
                   src="/images/logo.png"
                   alt="Instagram"
@@ -29,7 +30,7 @@ const Header = () => {
           <div className="text-gray-700 text-center flex items-center align-items">
             {loggedInUser ? (
               <>
-                <Link to={ROUTES.HOME} aria-label="Home">
+                <Link to={ROUTES.DASHBOARD} aria-label="Home">
                   <svg
                     className="w-8 mr-6 text-black-light cursor-pointer"
                     xmlns="http://www.w3.org/2000/svg"

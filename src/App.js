@@ -10,15 +10,15 @@ import * as ROUTES from "./routes";
 import { UserContext } from "./context";
 import useAuthListener from "./hooks/use-auth-listener";
 
-const Home     = lazy(() => import("./pages/Home"));
-const Login    = lazy(() => import("./pages/LoginPage"));
-const SignUp   = lazy(() => import("./pages/SignUpPage"));
-const Profile  = lazy(() => import("./pages/ProfilePage"));
-const NotFound = lazy(() => import("./pages/NotFoundPage"));
+const Login     = lazy(() => import("./pages/LoginPage"));
+const SignUp    = lazy(() => import("./pages/SignUpPage"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Profile   = lazy(() => import("./pages/ProfilePage"));
+const NotFound  = lazy(() => import("./pages/NotFoundPage"));
 
 export default function App() {
   const { user } = useAuthListener();
-  console.log("App => useAuthListener: " + user)
+  console.log("App => useAuthListener: " + { user });
 
   return (
     <UserContext.Provider value={{ user }}>
@@ -30,11 +30,11 @@ export default function App() {
             <Route path={ROUTES.PROFILE} element={<Profile />} />
             <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
             <Route
-              path={ROUTES.HOME}
+              path={ROUTES.DASHBOARD}
               element={
-                user != null
-                  ? (<Home user={{ user }} />)
-                  : (<Navigate to={ROUTES.LOGIN} />)
+              user != null
+                ? (<Dashboard user={{ user }}/>)
+                : (<Navigate to={ROUTES.LOGIN}/>)
               }
             />
           </Routes>

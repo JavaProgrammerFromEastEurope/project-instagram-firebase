@@ -9,7 +9,7 @@ import Comments from "./Comments";
 const Post = ({ content }) => {
   const commentInput = useRef(null);
   const handleFocus = () => commentInput.current.focus();
-
+  console.log("Post");
   // components
   // -> header, image, actions (like & comment icons), footer, comments
   return (

@@ -5,6 +5,7 @@ const NotFoundPage = () => {
   useEffect(() => {
     document.title = "Not Found - Instagram";
   }, []);
+  console.log("NotFoundPage");
 
   return (
     <div className="bg-gray-background">

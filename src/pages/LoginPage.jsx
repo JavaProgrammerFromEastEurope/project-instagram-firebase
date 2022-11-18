@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import * as ROUTES from "../routes";
+import { getAuth } from "firebase/auth";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -10,14 +11,14 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const isInvalid = password === "" || emailAddress === "";
+  console.log("LoginPage")
   const auth = getAuth();
-
   const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
       await signInWithEmailAndPassword(auth, emailAddress, password);
-      navigate(ROUTES.HOME);
+      navigate(ROUTES.DASHBOARD);
     } catch (error) {
       setEmailAddress("");
       setPassword("");

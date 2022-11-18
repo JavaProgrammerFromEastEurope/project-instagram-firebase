@@ -1,13 +1,12 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FirebaseContext } from "../context";
 import * as ROUTES from "../routes";
-import { doesUsernameExist } from "../services/firebase";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { addNewUser, doesUsernameExist } from "../services/firebase";
+import { auth } from "../lib/firebase";
 
 const SignUpPage = () => {
   const navigation = useNavigate();
-  const { firebase } = useContext(FirebaseContext);
 
   const [username, setUsername] = useState("");
   const [fullName, setFullName] = useState("");
@@ -16,11 +15,10 @@ const SignUpPage = () => {
 
   const [error, setError] = useState("");
   const isInvalid = password === "" || emailAddress === "";
+  console.log("SignUpPage");
 
   const handleSignUp = async (event) => {
     event.preventDefault();
-
-    const auth = getAuth();
     const usernameExists = await doesUsernameExist(username);
     if (!usernameExists) {
       try {
@@ -28,29 +26,21 @@ const SignUpPage = () => {
           auth,
           emailAddress,
           password
-        )
+        );
 
         // authentication
         // -> emailAddress & password & username (displayName)
         await createdUserResult.user.updateProfile({
           displayName: username
         });
+        await addNewUser(
+          createdUserResult.user.uid,
+          username,
+          fullName,
+          emailAddress
+        );
 
-        // firebase user collection (create a document)
-        await firebase
-          .firestore()
-          .collection("users")
-          .add({
-            userId: createdUserResult.user.uid,
-            username: username.toLowerCase(),
-            fullName,
-            emailAddress: emailAddress.toLowerCase(),
-            following: ["2"],
-            followers: [],
-            dateCreated: Date.now()
-          });
-
-        navigation(ROUTES.HOME);
+        navigation(ROUTES.DASHBOARD);
       } catch (error) {
         setFullName("");
         setEmailAddress("");

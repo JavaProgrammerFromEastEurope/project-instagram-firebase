@@ -5,7 +5,8 @@ import { Sidebar } from "../components/sidebar";
 import useUser from "../hooks/use-user";
 import { LoggedInUserContext } from "../context/logged-in-user";
 
-const Home = ({ user: loggedInUser }) => {
+const Dashboard = ({ user: loggedInUser }) => {
+  console.log("Dashboard")
   const { user, setActiveUser } = useUser(loggedInUser.uid);
   useEffect(() => {
     document.title = "Instagram";
@@ -24,8 +25,8 @@ const Home = ({ user: loggedInUser }) => {
   );
 };
 
-Home.propTypes = {
+Dashboard.propTypes = {
   user: PropTypes.object.isRequired
 };
 
-export default Home;
+export default Dashboard;
