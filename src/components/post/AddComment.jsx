@@ -1,11 +1,10 @@
 import { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { UserContext, FirebaseContext } from "../../context";
-import { doc, updateDoc } from "firebase/firestore";
+import { updateComments } from "../../services/firebase";
 
 const AddComment = ({ docId, comments, setComments, commentInput }) => {
   const [comment, setComment] = useState("");
-  const { firebase, FieldValue } = useContext(FirebaseContext);
   const {
     user: { displayName }
   } = useContext(UserContext);
@@ -16,10 +15,7 @@ const AddComment = ({ docId, comments, setComments, commentInput }) => {
     setComments([...comments, { displayName, comment }]);
     setComment("");
 
-    const photosRef = doc(firebase, "photos", docId);
-    await updateDoc(photosRef, {
-      comments: FieldValue.arrayUnion({ displayName, comment })
-    });
+    await updateComments(docId, displayName, comment);
   };
 
   return (

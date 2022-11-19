@@ -23,7 +23,7 @@ export default function useAuthListener() {
     });
 
     return () => listener();
-  }, [user]);
+  }, [user, auth]);
 
   return { user };
 }
