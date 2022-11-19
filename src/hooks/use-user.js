@@ -9,11 +9,11 @@ export default function useUser(userId) {
       const [user] = await getUserByUserId(userId);
       setActiveUser(user || {});
     }
-
+    console.log("user hook user = " + activeUser);
     if (userId) {
       getUserObjByUserId(userId);
     }
-  }, [userId]);
+  }, [activeUser, userId]);
 
   return { user: activeUser, setActiveUser };
 }
