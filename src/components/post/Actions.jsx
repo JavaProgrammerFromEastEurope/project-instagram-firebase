@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import PropTypes from "prop-types";
-import { UserContext, FirebaseContext } from "../../context";
+import { UserContext } from "../../context";
 import { updateLikesCounter } from "../../services/firebase";
 
 const Actions = ({ docId, totalLikes, likedPhoto, handleFocus }) => {
@@ -9,7 +9,6 @@ const Actions = ({ docId, totalLikes, likedPhoto, handleFocus }) => {
   } = useContext(UserContext);
   const [toggleLiked, setToggleLiked] = useState(likedPhoto);
   const [likes, setLikes] = useState(totalLikes);
-  const { firebase, FieldValue } = useContext(FirebaseContext);
 
   const handleToggleLiked = async () => {
     setToggleLiked((toggleLiked) => !toggleLiked);

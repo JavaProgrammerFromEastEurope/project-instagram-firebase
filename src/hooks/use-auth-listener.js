@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { getAuth } from "firebase/auth";
+import {auth} from '../lib/firebase'
 
 export default function useAuthListener() {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("authUser"))
   );
-  const auth = getAuth();
   useEffect(() => {
     const listener = onAuthStateChanged(auth, (authUser) => {
       if (authUser) {
@@ -23,7 +22,7 @@ export default function useAuthListener() {
     });
 
     return () => listener();
-  }, [user, auth]);
+  }, [user]);
 
   return { user };
 }

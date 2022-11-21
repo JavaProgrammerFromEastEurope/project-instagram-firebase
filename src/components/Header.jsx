@@ -4,14 +4,15 @@ import * as ROUTES from "../routes";
 import { DEFAULT_IMAGE_PATH } from "../constants";
 import { UserContext } from "../context";
 import useUser from "../hooks/use-user";
-import { getAuth, signOut } from "firebase/auth";
-
+import { signOut } from "firebase/auth";
+import { auth } from "../lib/firebase";
 const Header = () => {
   const { user: loggedInUser } = useContext(UserContext);
   const { user } = useUser(loggedInUser?.uid);
   const navigate = useNavigate();
-  console.log("username = " + user?.username);
-  console.log("Header");
+  console.log("Header => loggedInUser = " + loggedInUser?.displayName);
+  console.log("Header => loggedInUser = " + loggedInUser?.uid);
+
   return (
     <header className="h-16 bg-white border-b border-gray-primary mb-8">
       <div className="container mx-auto max-w-screen-lg h-full">
@@ -50,12 +51,12 @@ const Header = () => {
                   type="button"
                   title="Sign Out"
                   onClick={() => {
-                    signOut(getAuth());
+                    signOut(auth);
                     navigate(ROUTES.LOGIN);
                   }}
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
-                      signOut(getAuth());
+                      signOut(auth);
                       navigate(ROUTES.LOGIN);
                     }
                   }}

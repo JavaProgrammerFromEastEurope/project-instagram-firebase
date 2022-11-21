@@ -12,7 +12,7 @@ const ProfilePage = () => {
   console.log("ProilePage")
   useEffect(() => {
     async function checkUserExists() {
-      const [user] = await getUserByUsername(username);
+      const user = await getUserByUsername(username);
       if (user?.userId) {
         setUser(user);
       } else {

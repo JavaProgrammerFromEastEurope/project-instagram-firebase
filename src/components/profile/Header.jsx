@@ -5,7 +5,7 @@ import Skeleton from "react-loading-skeleton";
 import useUser from "../../hooks/use-user";
 import { isUserFollowingProfile, toggleFollow } from "../../services/firebase";
 import { DEFAULT_IMAGE_PATH } from "../../constants";
-import { UserContext} from "../../context";
+import { UserContext } from "../../context";
 
 const Header = ({
   photosCount,

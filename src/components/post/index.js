@@ -6,10 +6,17 @@ import Actions from "./Actions";
 import Footer from "./Footer";
 import Comments from "./Comments";
 
-const Post = ({ content }) => {
+const Post = ({content}) => {
   const commentInput = useRef(null);
   const handleFocus = () => commentInput.current.focus();
-  console.log("Post");
+  console.log("Post => content.username:"	+ content?.username);
+  console.log("Post => content.imageSrc:"	+ content?.imageSrc);
+  console.log("Post => content.caption:"	+ content?.caption);
+  console.log("Post => content.docId:"		+ content?.docId);
+  console.log("Post => content.likes:"		+ content?.likes);
+  console.log("Post => content.userLikedPhoto:"	+ content?.userLikedPhoto);
+  console.log("Post => content.dateCreated:"		+ content?.dateCreated);
+  console.log("Post => content.comments:"				+ content?.comments);
   // components
   // -> header, image, actions (like & comment icons), footer, comments
   return (
@@ -18,7 +25,7 @@ const Post = ({ content }) => {
       <Image src={content.imageSrc} caption={content.caption} />
       <Actions
         docId={content.docId}
-        totalLikes={content.likes.length}
+        totalLikes={content.likes}
         likedPhoto={content.userLikedPhoto}
         handleFocus={handleFocus}
       />

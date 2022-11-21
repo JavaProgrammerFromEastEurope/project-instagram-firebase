@@ -10,11 +10,13 @@ import {
   getDocs
 } from "firebase/firestore";
 import { app } from "../lib/firebase";
+
 // collection paths from the firebase
 const db = getFirestore(app);
 const users = collection(db, "users");
 const photos = collection(db, "photos");
 console.log("database = " + db);
+
 export async function doesUsernameExist(username) {
   const q = query(users, where("username", "==", username.toLowerCase()));
   const querySnapshot = await getDocs(q);
@@ -32,16 +34,15 @@ export async function addNewUser(userId, username, fullName, emailAddress) {
     dateCreated: Date.now()
   });
 }
+
 export async function getUserByUsername(username) {
-  const q = query(
-    collection(db, "users"),
-    where("username", "==", username.toLowerCase())
-  );
+  const q = query(users, where("username", "==", username.toLowerCase()));
   const querySnapshot = await getDocs(q);
-  const user = querySnapshot.forEach((user) => ({
-    ...user.data(),
-    docId: user.id
-  }));
+
+  let user;
+  querySnapshot.forEach((item) => {
+    user = item.data();
+  });
   return user;
 }
 
@@ -49,12 +50,13 @@ export async function getUserByUsername(username) {
 export async function getUserByUserId(userId) {
   const q = query(users, where("userId", "==", userId));
   const querySnapshot = await getDocs(q);
-  const result = querySnapshot.forEach((user) => ({
-    ...user.data(),
-    docId: user.id
-  }));
-  console.log("querySnapshot user.length = " + result);
-  return result;
+
+  let user;
+  querySnapshot.forEach((item) => {
+    user = item.data();
+  });
+  console.log("getUserByUserId => " + user);
+  return user;
 }
 
 // check all conditions before limit results
@@ -64,10 +66,32 @@ export async function getSuggestedProfiles(userId, following) {
     ? (q = query(users, where("userId", "not-in", [...following, userId])))
     : (q = query(users, where("userId", "!=", userId)));
   const querySnapshot = await getDocs(q);
-  return querySnapshot.forEach((user) => ({
-    ...user.data(),
-    docId: user.id
-  }));
+  let profiles = [];
+
+  querySnapshot.forEach((item) => {
+    profiles.push(item.data());
+  });
+  return profiles;
+}
+
+export async function isUserFollowingProfile(
+  loggedInUserUsername,
+  profileUserId
+) {
+  const q = query(
+    users,
+    where("username", "==", loggedInUserUsername),
+    where("following", "array-contains", profileUserId)
+  );
+  const usersSnapshot = await getDocs(q);
+  let user = [];
+  usersSnapshot.forEach((item) => {
+    user.push(item.data());
+  });
+  console.log("isUserFollowingProfile => " + loggedInUserUsername);
+  console.log("isUserFollowingProfile => " + profileUserId);
+  console.log("isUserFollowingProfile => " + user?.[0]);
+  return user;
 }
 
 export async function updateLoggedInUserFollowing(
@@ -107,58 +131,51 @@ export async function updateLikesCounter(userId, docId, toggleLiked) {
 
 export async function updateComments(docId, displayName, comment) {
   const photosRef = doc(db, "photos", docId);
-  await updateDoc(photosRef, {
+  return await updateDoc(photosRef, {
     comments: FieldValue.arrayUnion({ displayName, comment })
   });
-}
-
-export async function getPhotos(userId, following) {
-  const q = query(photos, where("userId", "in", following));
-  const photosSnapshot = await getDocs(q);
-  const userFollowedPhotos = photosSnapshot.forEach((photo) => ({
-    ...photo.data(),
-    docId: photo.id
-  }));
-  console.log("get photos => userFollowedUser: " + userFollowedPhotos);
-  const photoWithUserDetails = await Promise.all(
-    userFollowedPhotos.map(async (photo) => {
-      let userLikedPhoto;
-      photo.likes.includes(userId)
-        ? (userLikedPhoto = true)
-        : (userLikedPhoto = false);
-
-      const user = await getUserByUserId(photo.userId);
-      console.log("get photos => user: " + user);
-      const { username } = user[0];
-      return { username, ...photo, userLikedPhoto };
-    })
-  );
-  return photoWithUserDetails;
 }
 
 export async function getUserPhotosByUserId(userId) {
   const q = query(photos, where("userId", "==", userId));
   const photosSnapshot = await getDocs(q);
-  return photosSnapshot.forEach((photo) => ({
-    ...photo.data(),
-    docId: photo.id
-  }));
+
+  let photoArray = [];
+  photosSnapshot.forEach((item) => {
+    photoArray.push(item.data());
+  });
+  console.log("getUserPhotosByUserId => userId: " + userId);
+  console.log("getUserPhotosByUserId => photos:" + [photoArray]);
+  return photoArray;	
 }
 
-export async function isUserFollowingProfile(
-  loggedInUserUsername,
-  profileUserId
-) {
-  const q = query(
-    users,
-    where("username", "==", loggedInUserUsername),
-    where("following", "array-contains-any", profileUserId)
+export async function getPhotos(userId, following) {
+  const q = query(photos, where("userId", "in", following));
+  const photosSnapshot = await getDocs(q);
+
+  let usersPhotos = [];
+  photosSnapshot.forEach((item) => {
+		const photo = item.data();
+		photo.docId = item.id;
+    usersPhotos.push(photo);
+  });
+
+
+  const photoWithUserDetails = await Promise.all(
+    usersPhotos.map(async (photo) => {
+      let userLikedPhoto;
+      photo.likes?.includes(userId)
+        ? (userLikedPhoto = true)
+        : (userLikedPhoto = false);
+
+      console.log("getPhotos => userId = " + photo.userId);
+      const user = await getUserByUserId(photo.userId);
+      console.log("getPhotos => user = " + user);
+      const username = user?.username;
+      return { username,  ...photo, userLikedPhoto };
+    })
   );
-  const usersSnapshot = await getDocs(q);
-  return usersSnapshot.forEach((user) => ({
-    ...user.data(),
-    docId: user.id
-  }));
+  return photoWithUserDetails;
 }
 
 export async function toggleFollow(

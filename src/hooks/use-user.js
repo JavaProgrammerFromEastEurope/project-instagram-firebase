@@ -5,15 +5,14 @@ export default function useUser(userId) {
   const [activeUser, setActiveUser] = useState();
 
   useEffect(() => {
-    async function getUserObjByUserId(userId) {
-      const [user] = await getUserByUserId(userId);
-      setActiveUser(user || {});
+    async function getUserObjByUserId() {
+      if (userId) {
+        const user = await getUserByUserId(userId);
+        setActiveUser(user || {});
+      }
     }
-    console.log("user hook user = " + activeUser);
-    if (userId) {
-      getUserObjByUserId(userId);
-    }
-  }, [activeUser, userId]);
+    getUserObjByUserId();
+  }, [userId]);
 
   return { user: activeUser, setActiveUser };
 }
