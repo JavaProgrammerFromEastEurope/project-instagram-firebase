@@ -6,11 +6,10 @@ import "./index.css";
 import { auth, app } from "./lib/firebase";
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root"));
+			document.getElementById("root"));
 
 root.render(
-  <FirebaseContext.Provider
-      value={{ app, auth }}>
+  <FirebaseContext.Provider value={{ app, auth }}>
     <App />
   </FirebaseContext.Provider>
 );

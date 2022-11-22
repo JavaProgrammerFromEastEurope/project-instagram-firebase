@@ -7,7 +7,7 @@ import { LoggedInUserContext } from "../../context";
 const Sidebar = () => {
   const { user: { docId = "", fullName, username, userId, following } = {} } =
     useContext(LoggedInUserContext);
-  console.log("Sidebar");
+
   return (
     <div className="p-4">
       <User username={username} fullName={fullName} />

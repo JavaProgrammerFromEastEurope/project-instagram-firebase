@@ -16,7 +16,6 @@ const Profile = ({ user }) => {
     reducer,
     initialState
   );
-  console.log("Profile => user:" + user);
   useEffect(() => {
     async function getProfileInfoAndPhotos() {
       const photos = await getUserPhotosByUserId(user.userId);

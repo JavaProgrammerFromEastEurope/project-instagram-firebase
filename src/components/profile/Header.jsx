@@ -24,8 +24,7 @@ const Header = ({
   const { user } = useUser(loggedInUser?.uid);
   const [isFollowingProfile, setIsFollowingProfile] = useState(null);
   const activeBtnFollow = user?.username && user?.username !== profileUsername;
-
-  const handleToggleFollow = async () => {
+	const handleToggleFollow = async () => {
     setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
     setFollowerCount({
       followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1

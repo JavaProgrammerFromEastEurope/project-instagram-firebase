@@ -18,7 +18,6 @@ const NotFound  = lazy(() => import("./pages/NotFoundPage"));
 
 export default function App() {
   const { user } = useAuthListener();
-  console.log("App => useAuthListener: " + user?.displayName);
 
   return (
     <UserContext.Provider value={{ user }}>
@@ -33,7 +32,7 @@ export default function App() {
               path={ROUTES.DASHBOARD}
               element={
               user != null
-                ? (<Dashboard user={{ user }}/>)
+                ? (<Dashboard user={user}/>)
                 : (<Navigate to={ROUTES.LOGIN}/>)
               }
             />

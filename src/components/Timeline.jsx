@@ -10,8 +10,6 @@ const Timeline = () => {
   const { user: following } = useContext(UserContext);
   const { user } = useUser(following?.uid);
   const { photos } = usePhotos(user);
-  console.log("Timeline => user:" + user);
-  console.log("Timeline => photos:" + photos);
 
   return (
     <div className="container col-span-2">

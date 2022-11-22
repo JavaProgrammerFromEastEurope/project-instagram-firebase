@@ -9,7 +9,7 @@ const ProfilePage = () => {
   const { username } = useParams();
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  console.log("ProilePage")
+  
   useEffect(() => {
     async function checkUserExists() {
       const user = await getUserByUsername(username);

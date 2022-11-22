@@ -15,7 +15,7 @@ const SignUpPage = () => {
 
   const [error, setError] = useState("");
   const isInvalid = password === "" || emailAddress === "";
-  console.log("SignUpPage");
+
 
   const handleSignUp = async (event) => {
     event.preventDefault();

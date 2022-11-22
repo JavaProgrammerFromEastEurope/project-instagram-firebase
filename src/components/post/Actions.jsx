@@ -10,7 +10,8 @@ const Actions = ({ docId, totalLikes, likedPhoto, handleFocus }) => {
   const [toggleLiked, setToggleLiked] = useState(likedPhoto);
   const [likes, setLikes] = useState(totalLikes);
 
-  const handleToggleLiked = async () => {
+
+	const handleToggleLiked = async () => {
     setToggleLiked((toggleLiked) => !toggleLiked);
 
     await updateLikesCounter(userId, docId, toggleLiked);

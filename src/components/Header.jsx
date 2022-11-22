@@ -10,8 +10,6 @@ const Header = () => {
   const { user: loggedInUser } = useContext(UserContext);
   const { user } = useUser(loggedInUser?.uid);
   const navigate = useNavigate();
-  console.log("Header => loggedInUser = " + loggedInUser?.displayName);
-  console.log("Header => loggedInUser = " + loggedInUser?.uid);
 
   return (
     <header className="h-16 bg-white border-b border-gray-primary mb-8">

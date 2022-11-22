@@ -6,7 +6,7 @@ import {
   updateFollowedUserFollowers,
   getUserByUserId
 } from "../../services/firebase";
-import { LoggedInUserContext } from "../../context";
+import { UserContext } from "../../context";
 
 const SuggestedProfile = ({
   profileDocId,
@@ -16,7 +16,7 @@ const SuggestedProfile = ({
   loggedInUserDocId
 }) => {
   const [followed, setFollowed] = useState(false);
-  const { setActiveUser } = useContext(LoggedInUserContext);
+  const { setActiveUser } = useContext(UserContext);
 
   async function handleFollowUser() {
     setFollowed(true);
