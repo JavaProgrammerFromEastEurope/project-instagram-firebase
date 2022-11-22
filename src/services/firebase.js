@@ -13,12 +13,13 @@ import {
 import { app } from "../lib/firebase";
 
 // collection paths from the firebase
-const db = getFirestore(app);
-const users = collection(db, "users");
+const db   = getFirestore(app);
+const users  = collection(db, "users");
 const photos = collection(db, "photos");
 
 export async function doesUsernameExist(username) {
-  const q = query(users, where("username", "==", username.toLowerCase()));
+  const q = query(users,
+		where("username", "==", username.toLowerCase()));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.length > 0;
 }
@@ -36,7 +37,8 @@ export async function addNewUser(userId, username, fullName, emailAddress) {
 }
 
 export async function getUserByUsername(username) {
-  const q = query(users, where("username", "==", username.toLowerCase()));
+  const q = query(users,
+		where("username", "==", username.toLowerCase()));
   const querySnapshot = await getDocs(q);
 
   let user;
@@ -52,11 +54,11 @@ export async function getUserByUserId(userId) {
   const q = query(users, where("userId", "==", userId));
   const querySnapshot = await getDocs(q);
   let user;
-  querySnapshot.forEach((item) => {
+	querySnapshot.forEach((item) => {
     user = item.data();
     user.docId = item.id;
   });
-  return user;
+	return user;
 }
 
 // check all conditions before limit results
@@ -67,9 +69,9 @@ export async function getSuggestedProfiles(userId, following) {
     : (q = query(users, where("userId", "!=", userId)));
   const querySnapshot = await getDocs(q);
 
-  let profiles = [];
+	let profiles = [];
   querySnapshot.forEach((item) => {
-    const profile = item.data();
+		const profile = item.data();
     profile.docId = item.id;
     profiles.push(profile);
   });
@@ -107,7 +109,7 @@ export async function updateFollowedUserFollowers(
   loggedInUserDocId, // currently logged in user document id (authorized profile)
   isFollowingProfile // true/false (am i currently following this person?)
 ) {
-  const profileRef = doc(db, "users", profileDocId);
+	const profileRef = doc(db, "users", profileDocId);
   return await updateDoc(profileRef, {
     followers: isFollowingProfile
       ? arrayRemove(loggedInUserDocId)
@@ -174,7 +176,7 @@ export async function toggleFollow(
   profileUserId,
   followingUserId
 ) {
-  // 1st param: authorized doc id
+	// 1st param: authorized doc id
   // 2nd param: raphael's user id
   // 3rd param: is the user following this profile? e.g. does authorized follow raphael? (true/false)
   await updateLoggedInUserFollowing(
